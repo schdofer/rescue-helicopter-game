@@ -11,6 +11,7 @@ function start() {
     let game = {};
     let velocity = 5;
     let positionY = parseInt(Math.random() * 334);
+    let canShoot = true;
     let KEYS = {
         W: 87,
         S: 83,
@@ -62,7 +63,7 @@ function start() {
         }
 
         if (game.pressed[KEYS.D]) {
-            //Chama fun��o Disparo	
+            shoot();
         }
     }
 
@@ -96,6 +97,33 @@ function start() {
 
         if (positionX > 906) {
             $("#friend").css("left", 0);
+        }
+    }
+
+    function shoot() {
+        if (canShoot == true) {
+            canShoot = false;
+            let top = parseInt($("#player").css("top"))
+            positionX = parseInt($("#player").css("left"))
+            shootX = positionX + 190;
+            topShoot = top + 37;
+            $("#bgGame").append("<div id='shoot'></div");
+            $("#shoot").css("top", topShoot);
+            $("#shoot").css("left", shootX);
+
+            var timeShoot = window.setInterval(runShoot, 30);
+        }
+
+        function runShoot() {
+            positionX = parseInt($("#shoot").css("left"));
+            $("#shoot").css("left", positionX + 15);
+
+            if (positionX > 900) {
+                window.clearInterval(timeShoot);
+                timeShoot = null;
+                $("#shoot").remove();
+                canShoot = true;
+            }
         }
     }
 

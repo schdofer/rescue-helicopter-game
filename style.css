@@ -87,6 +87,13 @@ body {
 	background-image: url(assets/images/shoot.png);
 }
 
+#explosion-1, #explosion-2 {
+	width:15px;
+	height:87px;
+	position:absolute;
+}
+
+
 /* animation player helicopter */
 .animation-1 {
     /* background-image: url(../imgs/helicoptero.png); */

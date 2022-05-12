@@ -36,6 +36,7 @@ function start() {
         moveEnemy1();
         moveEnemy2();
         moveFriend();
+        collision();
     }
 
     //Função que movimenta o fundo do jogo
@@ -124,6 +125,39 @@ function start() {
                 $("#shoot").remove();
                 canShoot = true;
             }
+        }
+    }
+
+    // Função que verifica colisões
+    function collision() {
+        let collision1 = ($("#player").collision($("#enemy-1")));
+
+        if (collision1.length > 0) {
+            enemy1X = parseInt($("#enemy-1").css("left"));
+            enemy1Y = parseInt($("#enemy-1").css("top"));
+            explosion1(enemy1X, enemy1Y);
+
+            positionY = parseInt(Math.random() * 334);
+            $("#enemy-1").css("left", 694);
+            $("#enemy-1").css("top", positionY);
+        }
+    }
+
+    // Função que realiza explosão
+    function explosion1(enemy1X, enemy1Y) {
+        $("#bgGame").append("<div id='explosion-1'></div");
+        $("#explosion-1").css("background-image", "url(assets/images/explosion.png)");
+        let div = $("#explosion-1");
+        div.css("top", enemy1Y);
+        div.css("left", enemy1X);
+        div.animate({ width: 200, opacity: 0 }, "slow");
+
+        var explosionTime = window.setInterval(removeExplosion, 800);
+
+        function removeExplosion() {
+            div.remove();
+            window.clearInterval(explosionTime);
+            explosionTime = null;
         }
     }
 

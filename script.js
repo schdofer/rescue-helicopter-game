@@ -9,6 +9,7 @@ function start() {
 
     //Principais variáveis do Game
     let game = {};
+    let gameOver = false;
     let velocity = 5;
     let positionY = parseInt(Math.random() * 334);
     let canShoot = true;
@@ -131,7 +132,13 @@ function start() {
     // Função que verifica colisões
     function collision() {
         let collision1 = ($("#player").collision($("#enemy-1")));
+        var collision2 = ($("#player").collision($("#enemy-2")));
+        var collision3 = ($("#shoot").collision($("#enemy-1")));
+        var collision4 = ($("#shoot").collision($("#enemy-2")));
+        var collision5 = ($("#player").collision($("#friend")));
+        var collision6 = ($("#enemy-2").collision($("#friend")));
 
+        // Colisao do helicóptero com inimigo 1
         if (collision1.length > 0) {
             enemy1X = parseInt($("#enemy-1").css("left"));
             enemy1Y = parseInt($("#enemy-1").css("top"));
@@ -140,6 +147,47 @@ function start() {
             positionY = parseInt(Math.random() * 334);
             $("#enemy-1").css("left", 694);
             $("#enemy-1").css("top", positionY);
+        }
+
+        // Colisao do helicóptero com inimigo 2
+        if (collision2.length > 0) {
+            enemy2X = parseInt($("#enemy-2").css("left"));
+            enemy2Y = parseInt($("#enemy-2").css("top"));
+            explosion1(enemy2X, enemy2Y);
+
+            $("#enemy-2").remove();
+            repositionEnemy2();
+        }
+
+        // Colisao do tiro com inimigo 1
+        if (collision3.length > 0) {
+            enemy1X = parseInt($("#enemy-1").css("left"));
+            enemy1Y = parseInt($("#enemy-1").css("top"));
+
+            explosion1(enemy1X, enemy1Y);
+            $("#shoot").css("left", 950);
+
+            positionY = parseInt(Math.random() * 334);
+            $("#enemy-1").css("left", 694);
+            $("#enemy-1").css("top", positionY);
+        }
+
+        // Colisao do tiro com inimigo 2
+        if (collision4.length > 0) {
+            enemy2X = parseInt($("#enemy-2").css("left"));
+            enemy2Y = parseInt($("#enemy-2").css("top"));
+            $("#enemy-2").remove();
+
+            explosion2(enemy2X, enemy2Y);
+            $("#shoot").css("left", 950);
+
+            repositionEnemy2();
+        }
+
+        // Colisão player com friend
+        if (collision5.length > 0) {
+            repositionFriend();
+            $("#friend").remove();
         }
     }
 
@@ -161,5 +209,51 @@ function start() {
         }
     }
 
-}
+    // Explosão 2
+    function explosion2(enemy2X, enemy2Y) {
+        $("#bgGame").append("<div id='explosion-2'></div>");
+        $("#explosion-2").css("background-image", "url(assets/images/explosion.png)");
+        let div2 = $("#explosion-2");
+        div2.css("top", enemy2Y);
+        div2.css("left", enemy2X);
+        div2.animate({ width: 200, opacity: 0 }, "slow");
 
+        var explosionTime2 = window.setInterval(removeExplosion2, 1000);
+
+        function removeExplosion2() {
+            div2.remove();
+            window.clearInterval(explosionTime2);
+            explosionTime2 = null;
+        }
+    }
+
+    // Função para reposicionar inimigo 2
+    function repositionEnemy2() {
+        let collisionTime4 = window.setInterval(reposition4, 5000);
+
+        function reposition4() {
+            window.clearInterval(collisionTime4);
+            collisionTime4 = null;
+
+            if (gameOver == false) {
+                $("#bgGame").append("<div id=enemy-2></div>");
+            }
+        }
+    }
+
+    // Função para reposicionar amigo
+    function repositionFriend() {
+        var friendTime = window.setInterval(reposition6, 6000);
+
+        function reposition6() {
+            window.clearInterval(friendTime);
+            friendTime = null;
+
+            if (gameOver == false) {
+                $("#bgGame").append("<div id='friend' class='animation-3'></div>");
+            }
+        }
+
+    }
+
+}

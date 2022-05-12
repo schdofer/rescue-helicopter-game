@@ -81,18 +81,24 @@ body {
 }
 
 #shoot {
-	width: 50px;
-	height: 8px;
-	position: absolute;
-	background-image: url(assets/images/shoot.png);
+    width: 50px;
+    height: 8px;
+    position: absolute;
+    background-image: url(assets/images/shoot.png);
 }
 
-#explosion-1, #explosion-2 {
-	width:15px;
-	height:87px;
-	position:absolute;
+#explosion-1,
+#explosion-2 {
+    width: 15px;
+    height: 87px;
+    position: absolute;
 }
 
+#explosion-3 {
+    width: 44px;
+    height: 51px;
+    position: absolute;
+}
 
 /* animation player helicopter */
 .animation-1 {
@@ -210,5 +216,61 @@ body {
     }
     to {
         background-position: -528px;
+    }
+}
+
+.animation-4 {
+    width: 44px;
+    height: 51px;
+    background-image: url(assets/images/explosion_friend.png);
+    animation: play3 0.5s steps(7) infinite;
+    -webkit-animation: play3 0.5s steps(7) infinite;
+    -moz-animation: play3 0.5s steps(7) infinite;
+    -ms-animation: play3 0.5s steps(7) infinite;
+    -o-animation: play3 0.5s steps(7) infinite;
+}
+
+@keyframes play3 {
+    from {
+        background-position: 0px;
+    }
+    to {
+        background-position: -308px;
+    }
+}
+
+@-webkit-keyframes play3 {
+    from {
+        background-position: 0px;
+    }
+    to {
+        background-position: -308px;
+    }
+}
+
+@-moz-keyframes play3 {
+    from {
+        background-position: 0px;
+    }
+    to {
+        background-position: -308px;
+    }
+}
+
+@-ms-keyframes play3 {
+    from {
+        background-position: 0px;
+    }
+    to {
+        background-position: -308px;
+    }
+}
+
+@-o-keyframes play3 {
+    from {
+        background-position: 0px;
+    }
+    to {
+        background-position: -308px;
     }
 }

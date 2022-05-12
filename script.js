@@ -189,6 +189,16 @@ function start() {
             repositionFriend();
             $("#friend").remove();
         }
+
+        // Colisão do amigo com inimigo 2
+        if (collision6.length > 0) {
+            friendX = parseInt($("#friend").css("left"));
+            friendY = parseInt($("#friend").css("top"));
+            explosion3(friendX, friendY);
+            $("#friend").remove();
+
+            repositionFriend();
+        }
     }
 
     // Função que realiza explosão
@@ -224,6 +234,20 @@ function start() {
             div2.remove();
             window.clearInterval(explosionTime2);
             explosionTime2 = null;
+        }
+    }
+
+    // Explosão 3
+    function explosion3(friendX, friendY) {
+        $("#bgGame").append("<div id='explosion-3' class='animation-4'></div>");
+        $("#explosion-3").css("top", friendY);
+        $("#explosion-3").css("left", friendX);
+        let explosionTime3 = window.setInterval(reseteExplosion3, 1000);
+
+        function reseteExplosion3() {
+            $("#explosion-3").remove();
+            window.clearInterval(explosionTime3);
+            explosionTime3 = null;
         }
     }
 

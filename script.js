@@ -11,7 +11,7 @@ function start() {
 
     //Principais variáveis do Game
     let game = {};
-    let gameOver = false;
+    let endGame = false;
     let points = 0;
     let savedFriends = 0;
     let lostFriends = 0;
@@ -25,6 +25,17 @@ function start() {
         D: 68
     };
     game.pressed = [];
+
+    let soundShoot = document.getElementById("soundShoot");
+    let soundExplosion = document.getElementById("soundExplosion");
+    let music = document.getElementById("music");
+    let soundGameOver = document.getElementById("soundGameOver");
+    let soundLostFriend = document.getElementById("soundLostFriend");
+    let soundRescueFriend = document.getElementById("soundRescueFriend");
+
+    //Inicia música de fundo (em loop para o Game)
+    music.addEventListener("ended", function () { music.currentTime = 0; music.play(); }, false);
+    music.play();
 
     //Verifica se o usuário pressionou alguma tecla	
     $(document).keydown(function (e) {
@@ -114,6 +125,7 @@ function start() {
     function shoot() {
         if (canShoot == true) {
             canShoot = false;
+            soundShoot.play();
             let top = parseInt($("#player").css("top"))
             positionX = parseInt($("#player").css("left"))
             shootX = positionX + 190;
@@ -149,6 +161,7 @@ function start() {
 
         // Colisao do helicóptero com inimigo 1
         if (collision1.length > 0) {
+            soundExplosion.play();
             currentEnergy--;
             enemy1X = parseInt($("#enemy-1").css("left"));
             enemy1Y = parseInt($("#enemy-1").css("top"));
@@ -161,6 +174,7 @@ function start() {
 
         // Colisao do helicóptero com inimigo 2
         if (collision2.length > 0) {
+            soundExplosion.play();
             currentEnergy--;
             enemy2X = parseInt($("#enemy-2").css("left"));
             enemy2Y = parseInt($("#enemy-2").css("top"));
@@ -172,7 +186,9 @@ function start() {
 
         // Colisao do tiro com inimigo 1
         if (collision3.length > 0) {
+            soundExplosion.play();
             points = points + 100;
+            nextLevel();
             enemy1X = parseInt($("#enemy-1").css("left"));
             enemy1Y = parseInt($("#enemy-1").css("top"));
 
@@ -186,6 +202,7 @@ function start() {
 
         // Colisao do tiro com inimigo 2
         if (collision4.length > 0) {
+            soundExplosion.play();
             points = points + 50;
             enemy2X = parseInt($("#enemy-2").css("left"));
             enemy2Y = parseInt($("#enemy-2").css("top"));
@@ -199,6 +216,7 @@ function start() {
 
         // Colisão player com friend
         if (collision5.length > 0) {
+            soundRescueFriend.play();
             savedFriends++;
             repositionFriend();
             $("#friend").remove();
@@ -206,6 +224,8 @@ function start() {
 
         // Colisão do amigo com inimigo 2
         if (collision6.length > 0) {
+            soundExplosion.play();
+            soundLostFriend.play();
             lostFriends++;
             friendX = parseInt($("#friend").css("left"));
             friendY = parseInt($("#friend").css("top"));
@@ -274,7 +294,7 @@ function start() {
             window.clearInterval(collisionTime4);
             collisionTime4 = null;
 
-            if (gameOver == false) {
+            if (endGame == false) {
                 $("#bgGame").append("<div id=enemy-2></div>");
             }
         }
@@ -288,7 +308,7 @@ function start() {
             window.clearInterval(friendTime);
             friendTime = null;
 
-            if (gameOver == false) {
+            if (endGame == false) {
                 $("#bgGame").append("<div id='friend' class='animation-3'></div>");
             }
         }
@@ -316,7 +336,43 @@ function start() {
 
         if (currentEnergy == 0) {
             $("#energy").css("background-image", "url(assets/images/energy-0.png)");
+            gameOver();
         }
     }
 
+    // Função que amplia a dificuldade (aumentando a velocidade do inimigo 1)
+    function nextLevel() {
+        velocity = velocity + 0.2;
+    }
+
+    // Função para Game Over
+    function gameOver() {
+        endGame = true;
+        music.pause();
+        soundGameOver.play();
+
+        window.clearInterval(game.timer);
+        game.timer = null;
+
+        $("#player").remove();
+        $("#enemy-1").remove();
+        $("#enemy-2").remove();
+        $("#friend").remove();
+
+        $("#bgGame").append("<div id='gameOver'></div>");
+        $("#gameOver").html(
+            `<h1> Game Over </h1>
+             <p>Sua pontuação foi: ${points}</p>
+             <div id='restart' onClick=restartGame()>
+                <h3>Jogar Novamente</h3>
+            </div>`);
+    }
+
+}
+
+ // Função que reinicializa o Game
+ function restartGame() {
+    soundGameOver.pause();
+    $("#gameOver").remove();
+    start();
 }

@@ -122,6 +122,24 @@ h2 {
     color: #fff;
 }
 
+h3 {
+    font-family: Titulo;
+    font-size: 20px;
+    color: #603a03;
+    cursor: pointer;
+}
+
+#gameOver {
+    width: 350px;
+    height: 200px;
+    background-color: #fff;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    text-align: center;
+    padding: 10px;
+}
+
 /* animation player helicopter */
 .animation-1 {
     /* background-image: url(../imgs/helicoptero.png); */

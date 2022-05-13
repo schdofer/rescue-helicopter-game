@@ -100,6 +100,28 @@ body {
     position: absolute;
 }
 
+#score {
+    width: 450px;
+    height: 50px;
+    position: absolute;
+    left: 5px;
+    top: 590px;
+}
+
+#energy {
+    width: 140px;
+    height: 38px;
+    position: absolute;
+    left: 750px;
+    top: 7px;
+}
+
+h2 {
+    font-family: Titulo;
+    font-size: 20px;
+    color: #fff;
+}
+
 /* animation player helicopter */
 .animation-1 {
     /* background-image: url(../imgs/helicoptero.png); */

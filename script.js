@@ -6,10 +6,16 @@ function start() {
     $("#bgGame").append("<div id='enemy-1' class='animation-2'></div>");
     $("#bgGame").append("<div id='enemy-2'></div>");
     $("#bgGame").append("<div id='friend' class='animation-3'></div>");
+    $("#bgGame").append("<div id='score'></div>");
+    $("#bgGame").append("<div id='energy'></div>");
 
     //Principais variáveis do Game
     let game = {};
     let gameOver = false;
+    let points = 0;
+    let savedFriends = 0;
+    let lostFriends = 0;
+    var currentEnergy = 3;
     let velocity = 5;
     let positionY = parseInt(Math.random() * 334);
     let canShoot = true;
@@ -38,6 +44,8 @@ function start() {
         moveEnemy2();
         moveFriend();
         collision();
+        score();
+        energy();
     }
 
     //Função que movimenta o fundo do jogo
@@ -102,6 +110,7 @@ function start() {
         }
     }
 
+    // Atira
     function shoot() {
         if (canShoot == true) {
             canShoot = false;
@@ -140,6 +149,7 @@ function start() {
 
         // Colisao do helicóptero com inimigo 1
         if (collision1.length > 0) {
+            currentEnergy--;
             enemy1X = parseInt($("#enemy-1").css("left"));
             enemy1Y = parseInt($("#enemy-1").css("top"));
             explosion1(enemy1X, enemy1Y);
@@ -151,6 +161,7 @@ function start() {
 
         // Colisao do helicóptero com inimigo 2
         if (collision2.length > 0) {
+            currentEnergy--;
             enemy2X = parseInt($("#enemy-2").css("left"));
             enemy2Y = parseInt($("#enemy-2").css("top"));
             explosion1(enemy2X, enemy2Y);
@@ -161,6 +172,7 @@ function start() {
 
         // Colisao do tiro com inimigo 1
         if (collision3.length > 0) {
+            points = points + 100;
             enemy1X = parseInt($("#enemy-1").css("left"));
             enemy1Y = parseInt($("#enemy-1").css("top"));
 
@@ -174,6 +186,7 @@ function start() {
 
         // Colisao do tiro com inimigo 2
         if (collision4.length > 0) {
+            points = points + 50;
             enemy2X = parseInt($("#enemy-2").css("left"));
             enemy2Y = parseInt($("#enemy-2").css("top"));
             $("#enemy-2").remove();
@@ -186,12 +199,14 @@ function start() {
 
         // Colisão player com friend
         if (collision5.length > 0) {
+            savedFriends++;
             repositionFriend();
             $("#friend").remove();
         }
 
         // Colisão do amigo com inimigo 2
         if (collision6.length > 0) {
+            lostFriends++;
             friendX = parseInt($("#friend").css("left"));
             friendY = parseInt($("#friend").css("top"));
             explosion3(friendX, friendY);
@@ -277,7 +292,31 @@ function start() {
                 $("#bgGame").append("<div id='friend' class='animation-3'></div>");
             }
         }
+    }
 
+    // Função que pontua o Score do Game
+    function score() {
+        $("#score")
+            .html(`<h2> Pontos: ${points} &nbsp; Salvos: ${savedFriends} &nbsp; Perdidos: ${lostFriends}</h2>`);
+    }
+
+    // Função que monitora e atualiza a energia do usuário
+    function energy() {
+        if (currentEnergy == 3) {
+            $("#energy").css("background-image", "url(assets/images/energy-3.png)");
+        }
+
+        if (currentEnergy == 2) {
+            $("#energy").css("background-image", "url(assets/images/energy-2.png)");
+        }
+
+        if (currentEnergy == 1) {
+            $("#energy").css("background-image", "url(assets/images/energy-1.png)");
+        }
+
+        if (currentEnergy == 0) {
+            $("#energy").css("background-image", "url(assets/images/energy-0.png)");
+        }
     }
 
 }
